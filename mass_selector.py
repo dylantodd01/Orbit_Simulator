@@ -16,6 +16,10 @@ class MassSelector:
 			[(self.x_location, self.y_location + self.SPACING1), self.settings.MED_R + self.settings.SELECTOR_CIRC_W], 
 			[(self.x_location, self.y_location + self.SPACING2), self.settings.SMALL_R + self.settings.SELECTOR_CIRC_W]]
 
+		self.arrows = pygame.image.load("images/arrows.png")
+		self.arrows = pygame.transform.smoothscale(self.arrows, (self.arrows.get_width() * self.settings.IMAGE_SCALING, 
+			self.arrows.get_height() * self.settings.IMAGE_SCALING))
+
 
 	def draw(self, screen):
 		pygame.draw.circle(screen, self.settings.BLUE, (self.x_location, self.y_location), self.settings.LARGE_R)
@@ -23,6 +27,7 @@ class MassSelector:
 		pygame.draw.circle(screen, self.settings.GREEN, (self.x_location, self.y_location + self.SPACING2), self.settings.SMALL_R)
 		pygame.draw.circle(screen, self.settings.WHITE, self.selector_circle_parameters[self.selected_mass][0], 
 			self.selector_circle_parameters[self.selected_mass][1], self.settings.SELECTOR_CIRC_W)
+		screen.blit(self.arrows, (self.x_location - 80, self.y_location + 50))
 
 
 	def selector_up(self):
