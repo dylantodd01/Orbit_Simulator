@@ -25,6 +25,7 @@ class MovingMass(Mass):
 
 	def __init__(self, colour, location, mass, radius):
 		Mass.__init__(self, colour, location, mass, radius)
+		print(self.mass)
 
 		self.z_vec = np.array([float(location[0]), float(self.settings.INITIAL_X_VEL), 
 			float(location[1]), float(self.settings.INITIAL_Y_VEL)]) # Vector of form [x, x', y, y']
@@ -39,7 +40,7 @@ class MovingMass(Mass):
 
 	def draw_trail(self, screen):
 		for location in self.trail:
-			pygame.draw.circle(screen, self.settings.BLUE, location, 2)
+			pygame.draw.circle(screen, self.settings.TRAIL_COLOUR, location, 1.5)
 
 	def move(self, sun):
 		self.runge_kutta_step(self.z_vec, sun)
