@@ -49,6 +49,8 @@ class GravitySimulator:
 
 			for mass in self.masses:
 				mass.move(self.sun)
+				if mass.collide_with_sun(self.sun):
+					self.masses.remove(mass)
 
 			self.update_screen()
 			time.sleep(1/self.settings.FPS)

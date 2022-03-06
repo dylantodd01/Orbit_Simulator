@@ -25,7 +25,6 @@ class MovingMass(Mass):
 
 	def __init__(self, colour, location, mass, radius):
 		Mass.__init__(self, colour, location, mass, radius)
-		print(self.mass)
 
 		self.z_vec = np.array([float(location[0]), float(self.settings.INITIAL_X_VEL), 
 			float(location[1]), float(self.settings.INITIAL_Y_VEL)]) # Vector of form [x, x', y, y']
@@ -40,12 +39,17 @@ class MovingMass(Mass):
 
 	def draw_trail(self, screen):
 		for location in self.trail:
-			pygame.draw.circle(screen, self.settings.TRAIL_COLOUR, location, 1.5)
+			pygame.draw.circle(screen, self.settings.TRAIL_COLOUR, location, 2)
 
 	def move(self, sun):
 		self.runge_kutta_step(self.z_vec, sun)
 		self.update_location((self.z_vec[0], self.z_vec[2]))
 		self.update_trail()
+
+	def collide_with_sun(self, sun):
+		if (((sun.location[0] - self.z_vec[0]) ** 2 + (sun.location[1] - self.z_vec[2]) ** 2) ** 0.5) < self.settings.STATIONARY_RAD:
+			return True
+		return False
 
 	def state_deriv(self, z, sun):
 		r_x = (sun.location[0] - z[0])
@@ -56,12 +60,9 @@ class MovingMass(Mass):
 		sign_x = 1 if r_x > 0 else -1
 		sign_y = 1 if r_y > 0 else -1
 		theta = math.atan(r_y / r_x)
-	
 		R_sqrd = (r_x ** 2) + (r_y ** 2)
-		if R_sqrd < 20:
-			R_sqrd = 20
 
-		force = self.gravitational_constant * ((self.mass * sun.mass) / R_sqrd)
+		force = self.gravitational_constant * ((self.mass * sun.mass) / (R_sqrd + 1))
 		force_x = force * abs(math.cos(theta)) * sign_x
 		force_y = force * abs(math.sin(theta)) * sign_y
 

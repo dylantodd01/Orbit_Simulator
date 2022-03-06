@@ -41,6 +41,7 @@ class Settings:
 		self.SPACING = 20
 		self.SELECTOR_CIRC_W = 4
 		self.MASS_SCALING = 0.4
+		self.IMAGE_SCALING = 0.65
 
 
 
